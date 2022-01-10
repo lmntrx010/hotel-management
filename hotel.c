@@ -26,6 +26,7 @@ int is_admin()
     }
 }
 
+//function to check the login credential of the customer
 int is_customer()
 {
     char username[20], password[20];
