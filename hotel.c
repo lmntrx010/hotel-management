@@ -1,13 +1,94 @@
 #include<stdio.h>
 #include<string.h>
+#include<stdlib.h>
+
 //structure for the hotel food management
 struct node{
     char dish_name[200];
     int price;
-    float amount_left;
+    //float amount_left;
     struct node* prev;
     struct node* next;
-}header;
+}*header;
+
+struct node* add_new(struct node* header)
+{
+    //function for adding new dishes
+    struct node* new = malloc(sizeof(struct node));
+    new->next=NULL;
+    struct node* ptr = header;
+    printf("Enter the name of the dish:");
+    fgetc(stdin);
+    fgets(new->dish_name,200,stdin);
+    printf("Enter the unit price of the dish:");
+    scanf("%d",&new->price);
+    fgetc(stdin);
+    if(ptr==NULL)
+    {
+        new->prev=NULL;
+        header=new;
+    }
+    else
+    {
+        while(ptr->next!=NULL)
+        {
+            ptr=ptr->next;
+        }
+        new->prev=ptr;
+        ptr->next=new;
+    }
+    return header;
+}
+void display_menu(struct node* header)
+{
+    //function for viewing the added dishes
+    struct node* ptr = header;
+    if(ptr==NULL)
+    {
+        printf("Sorry the dishes are not ready now!\n");
+    }
+    else
+    {
+        while(ptr!=NULL)
+        {
+            printf("%s",ptr->dish_name);
+            printf("%d\n",ptr->price);
+            ptr=ptr->next;
+        }
+    }
+}
+//--------------function detailing about the admin section...............
+void admin(struct node* header)
+{
+    int option, flag=0;
+    while(flag==0)
+    {
+        printf("Choose an option:\n1.Display menu\n2.Add new item\n3.Delete dish\n4.Modify price of dish\n");
+        scanf("%d",&option);
+        switch (option)
+        {
+        case 1:
+            display_menu(header);
+            break;
+        case 2:
+            header=add_new(header);
+            break;
+        case 3:
+            //delete_dish();
+            break;
+        case 4:
+            //modify_price();
+            break;
+        case 5:
+            flag=1;
+            break;
+        default:
+            printf("invalid choice!\n");
+            break;
+        }
+    }
+}
+
 
 //function to check the login credentials of the admin
 int is_admin()
@@ -25,7 +106,6 @@ int is_admin()
         return 0;
     }
 }
-
 //function to check the login credential of the customer
 int is_customer()
 {
@@ -46,6 +126,7 @@ int is_customer()
 int main()
 {
     int option, flag=0;
+    //struct node* header=NULL;
     while(flag==0)
     {
         printf("1 for admin.\n2 for customer.\n3 exit\n");
@@ -58,6 +139,7 @@ int main()
             if(is_admin())
             {
                 printf("Succesfully logined as admin!\n");
+                admin(header);
             }
             else
             {
