@@ -1,7 +1,6 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-
 //structure for the hotel food management
 struct node{
     char dish_name[200];
@@ -10,6 +9,25 @@ struct node{
     struct node* prev;
     struct node* next;
 }*header;
+
+void display_menu(struct node* header)
+{
+    //function for viewing the added dishes
+    struct node* ptr = header;
+    if(ptr==NULL)
+    {
+        printf("Sorry the dishes are not ready now!\n");
+    }
+    else
+    {
+        while(ptr!=NULL)
+        {
+            printf("%s",ptr->dish_name);
+            printf("%d\n",ptr->price);
+            ptr=ptr->next;
+        }
+    }
+}
 
 struct node* add_new(struct node* header)
 {
@@ -39,24 +57,99 @@ struct node* add_new(struct node* header)
     }
     return header;
 }
-void display_menu(struct node* header)
+
+//function to delete the dishes
+struct node* delete_dish(struct node* header)
 {
-    //function for viewing the added dishes
-    struct node* ptr = header;
+    struct node* ptr=header;
+    int k,i=1;
+    if(ptr==NULL)
+    {
+        printf("There are no available dishes in the list to delete!\n");
+    }
+    else
+    {
+        display_menu(header);
+        printf("Enter the Dish index to delete:");
+        scanf("%d",&k);
+        while(ptr!=NULL)
+        {
+            if(i==k)
+            {
+                break;
+            }
+            i=i+1;
+            ptr=ptr->next;
+        }
+        if(ptr==NULL)
+        {
+            printf("Entered index out of bound!\n");
+        }
+        else if(ptr->next==NULL)
+        {
+            if(ptr->prev==NULL)
+            {
+                header = ptr->next;
+                //free(ptr);
+            }
+            else
+            {
+                ptr->prev->next=NULL;
+                //free(ptr);
+            }
+        }
+        else if(ptr==header)
+        {
+            ptr->next->prev=NULL;
+            header=ptr->next;
+            //free(ptr);
+        }
+        else
+        {
+            ptr->prev->next=ptr->next;
+            ptr->next->prev=ptr->prev;
+            //free(ptr);
+        }
+    }
+    return header;
+}
+
+struct node* Modify(struct node* header)
+{
+    struct node* ptr=header;
+    char temp[50];
+    int k,i=1,nprice;
+    display_menu(header);
     if(ptr==NULL)
     {
         printf("Sorry the dishes are not ready now!\n");
     }
     else
     {
+        printf("\nEnter Dish Index whose Price has to be Altered:");
+        scanf("%d",&k);
         while(ptr!=NULL)
         {
-            printf("%s",ptr->dish_name);
-            printf("%d\n",ptr->price);
+            if(i==k)
+            break;
+            i=i+1;
             ptr=ptr->next;
         }
+        if(ptr==NULL)
+        {
+            printf("The entered dish index is not accessible!\n");
+        }
+        else
+        {
+            printf("Enter New Price for the Dish:");
+            scanf("%d",&nprice);
+            ptr->price=nprice;
+            printf("Dish Price Changed!\n");
+        }
     }
+    return header;
 }
+
 //--------------function detailing about the admin section...............
 void admin(struct node* header)
 {
@@ -74,10 +167,10 @@ void admin(struct node* header)
             header=add_new(header);
             break;
         case 3:
-            //delete_dish();
+            header=delete_dish(header);
             break;
         case 4:
-            //modify_price();
+            header=Modify(header);
             break;
         case 5:
             flag=1;
