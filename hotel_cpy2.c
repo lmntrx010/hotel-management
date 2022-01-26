@@ -15,45 +15,13 @@ struct order
     int price, qty;
     struct order *prev1;
     struct order *next1;
-} * header1;
+}*header1;
 
-//function to generate the bill and desplay it on the screen
-void generate_bill(struct order* header1)
-{
-    struct order* temp=header1;
-    int j,i=1;
-    if (temp== NULL)
-    {
-        printf("No food is ordered");
-    }
-    else
-    {
-        printf("--------------------------------------------\n");
-        printf("-------------------BILL---------------------\n");
-        printf("sl no\tDish Name\tQuantity\tPrice\n");
-        while(temp!=NULL)
-        {
-            printf("%d\t",i);
-            //printf("%s", ptr1->dish_name);
-            //printf("%d\n", ptr1->price);
-            for(j=0;temp->dish_name[j]!='\n';j++)
-            {
-                printf("%c",temp->dish_name[j]);
-            }
-            printf("\t");
-            printf("\t%d", temp->qty);
-            printf("\t%d\n", temp->price);
-            temp=temp->next1;
-            i++;
-        }
-        printf("--------------------------------------------\n");
-        printf("--------------------------------------------\n");
-    }
-}
+
 //sample function to display the dishes ordered
 void display_order(struct order *header1)
 {
-    int j,i=1;
+    int i=1;
     struct order *ptr1 = header1;
     if (ptr1 == NULL)
     {
@@ -61,25 +29,14 @@ void display_order(struct order *header1)
     }
     else
     {
-        printf("-----------------------------------\n");
-        printf("-----------------------------------\n");
-        printf("Sl.No.\tDish Name\tPrice\n");
         while (ptr1 != NULL)
         {
-            printf("%d\t",i);
-            //printf("%s", ptr1->dish_name);
-            //printf("%d\n", ptr1->price);
-            for(j=0;ptr1->dish_name[j]!='\n';j++)
-            {
-                printf("%c",ptr1->dish_name[j]);
-            }
-            printf("\t");
-            printf("\t%d\n", ptr1->price);
-            ptr1=ptr1->next1;
+            printf("%d\n",i);
+            printf("%s", ptr1->dish_name);
+            printf("%d\n", ptr1->price);
+            ptr1 = ptr1->next1;
             i++;
         }
-        printf("-----------------------------------\n");
-        printf("-----------------------------------\n");
     }
 }
 
@@ -94,27 +51,15 @@ void display_menu(struct node* header)
     }
     else
     {
-        int j,i=1;
-        printf("-----------------------------------\n");
-        printf("-----------------------------------\n");
-        printf("Sl.No.\tDish Name\tPrice\n");
+        int i=1;
         while(ptr!=NULL)
         {
-            
-            printf("%d\t",i);
-            //printf("%s", ptr1->dish_name);
-            //printf("%d\n", ptr1->price);
-            for(j=0;ptr->dish_name[j]!='\n';j++)
-            {
-                printf("%c",ptr->dish_name[j]);
-            }
-            printf("\t");
-            printf("\t%d\n", ptr->price);
+            printf("%d\n",i);
+            printf("%s",ptr->dish_name);
+            printf("%d\n",ptr->price);
             ptr=ptr->next;
             i++;
         }
-        printf("-----------------------------------\n");
-        printf("-----------------------------------\n");
     }
 }
 
@@ -255,7 +200,7 @@ struct order* searchNode(struct node *header, struct order *header1, int num, in
         {
             strcpy(new1->dish_name, ptr->dish_name);
             new1->price = (ptr->price)*qty;
-            new1->qty = qty;
+            new1->qty=qty;
             flag=1;
             break;
         }
@@ -325,9 +270,35 @@ struct order* placeOrder(struct node* header,struct order* header1)
         }
     }
     display_order(header1);
-    return header1;
-    
+    return header1;   
 }
+void generate_bill(struct order* header1)
+{
+    struct order* temp=header1;
+    int i=1;
+    if (temp== NULL)
+    {
+        printf("No food is ordered");
+    }
+    else
+    {
+        printf("---------------------MENU---------------------\n");
+        printf("sl no\tDish Name\tquantity\tPrice\n");
+        while(temp!=NULL)
+        {
+            int j;
+            printf("%d     \t",i);
+            for(j=0;temp->dish_name[j]!='\n';j++)
+            {
+                printf("%c",temp->dish_name[j]);
+            }
+            printf("\t  \t%d         \t%d\n",temp->qty,temp->price);
+            temp=temp->next1;
+            i++;
+        }
+    }
+}
+
 
 
 
